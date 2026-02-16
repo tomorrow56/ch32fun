@@ -17,13 +17,13 @@ install the RISC-V toolchain with homebrew following these instructions
 
 ### Modified files
 
-- Makefile:
+- Makefile
 
 ```makefile
 CFLAGS := $(ARCHFLAG) -O0 -Wall -Wno-asm-operand-widths -Wno-deprecated-declarations -Wno-deprecated-non-prototype -D__MACOSX__ -DMINICHLINK -DCH32V003 -I. $(LIBUSB_INCS) -DDEFAULT_CHLINK_PID=0xb803
 ```
 
-- minichlink:
+- minichlink.c
 
 code changed to support CH-Link PID 0xb803 on UIAPduino Pro Micro CH32V003 V1.4
 
