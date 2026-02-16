@@ -9,6 +9,63 @@ On Windows, if you need to you can install the WinUSB driver over the WCH interf
 
 The exe here is about 12kB and contains everything except for the libusb driver.  In Linux you need `libusb-1.0-dev`.
 
+## UIAPduino Pro Micro CH32V003 V1.4macOS Support
+
+install the RISC-V toolchain with homebrew following these instructions
+
+- [RISC-V Homebrew Repository](https://github.com/riscv-software-src/homebrew-riscv)
+
+### Modified files
+
+- Makefile:
+
+```makefile
+CFLAGS := $(ARCHFLAG) -O0 -Wall -Wno-asm-operand-widths -Wno-deprecated-declarations -Wno-deprecated-non-prototype -D__MACOSX__ -DMINICHLINK -DCH32V003 -I. $(LIBUSB_INCS) -DDEFAULT_CHLINK_PID=0xb803
+```
+
+- minichlink:
+
+code changed to support CH-Link PID 0xb803 on UIAPduino Pro Micro CH32V003 V1.4
+
+line 55:
+```c
+// original
+else if( strcmp( specpgm, "b003boot" ) == 0 )
+    dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b003));
+
+// modified for UIAPduino Pro Micro CH32V003 V1.4 with CH-Link PID 0xb803
+else if( strcmp( specpgm, "b003boot" ) == 0 )
+    dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b803));
+```
+
+line 74:
+
+```c
+// original
+else if ((dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b003))))
+{
+    fprintf( stderr, "Found B003Fun Bootloader\n" );
+}
+
+// modified for UIAPduino Pro Micro CH32V003 V1.4 with CH-Link PID 0xb803
+else if ((dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b803))))
+{
+    fprintf( stderr, "Found B003Fun Bootloader\n" );
+}
+```
+
+### Notes
+
+- Copy minichlink to your Arduino IDE "tools" folder:
+  `/Arduino/Arduino15/packages/UIAP/tools/minichlink-2982dfd/1.0.0/`
+
+
+### Key Improvements
+
+1. **Enhanced CH-Link Support**: The `DEFAULT_CHLINK_PID=0xb803` definition improves compatibility with CH-Link programming dongles on macOS
+2. **Warning Suppression**: macOS-specific compiler warnings are suppressed for cleaner builds
+3. **Universal Binary Support**: ARCH flag allows building for specific architectures (x86_64/arm64)
+
 ## Usage
 
 ```

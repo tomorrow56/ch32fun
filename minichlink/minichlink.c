@@ -52,7 +52,8 @@ void * MiniCHLinkInitAsDLL( struct MiniChlinkFunctions ** MCFO, const init_hints
 		else if( strcmp( specpgm, "nchlink" ) == 0 )
 			dev = TryInit_NHCLink042();
 		else if( strcmp( specpgm, "b003boot" ) == 0 )
-			dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b003));
+//			dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b003));
+			dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b803));
 		else if( strcmp( specpgm, "ardulink" ) == 0 )
 			dev = TryInit_Ardulink(init_hints);
 	}
@@ -74,7 +75,8 @@ void * MiniCHLinkInitAsDLL( struct MiniChlinkFunctions ** MCFO, const init_hints
 		{
 			fprintf( stderr, "Found NHC-Link042 Programmer\n" );
 		}
-		else if ((dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b003))))
+//		else if ((dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b003))))
+		else if ((dev = TryInit_B003Fun(SimpleReadNumberInt(init_hints->serial_port, 0x1209b803))))
 		{
 			fprintf( stderr, "Found B003Fun Bootloader\n" );
 		}
